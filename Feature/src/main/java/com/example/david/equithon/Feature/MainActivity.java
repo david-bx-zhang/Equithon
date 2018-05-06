@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
             CSVReader csv = new CSVReader(inputStream);
             featureList = csv.read();
             for (int i = 0; i < featureList.size(); i++) {
-                for (int j = 0; j < 13;++j) {
+                for (int j = 0; j < 12;++j) {
                     str = str + featureList.get(i)[j] + ",";
                 }
                 str  = str + "\n";
@@ -122,17 +122,54 @@ public class MainActivity extends AppCompatActivity {
         CSVReader csv = new CSVReader(inputStream);
         featureList = csv.read();
 
-        String compare1 = "David Zhang";
-        String compare2 = "Test";
+        String compare1 = new String("David Zhang");
+        String compare2 = new String("Test");
+        String[] compare1_arr = new String[12];
+        String[] compare2_arr = new String[12];
+
 
         for (int i = 0; i < featureList.size(); ++i) {
-            if
+            String name = featureList.get(i)[0];
+            if (compare1.equals(name)) {
+                for (int j = 0; j < 12; ++j) {
+                    compare1_arr[j] = featureList.get(i)[j];
+                }
+            }
+            if (compare2.equals(name)) {
+                for (int j = 0; j < 12; ++j) {
+                    compare2_arr[j] = featureList.get(i)[j];
+                }
+            }
+        }
+
+        int acc = 0;
+        String finalstr = "";
+
+        for (int i = 0; i < 12; ++i) {
+            if (i == 2 ||
+                    i == 4 ||
+                    i == 6  ||
+                    i == 8 ||
+                    i == 10) {
+                if (compare1_arr[i].equals(compare2_arr[i])) {
+                    if (acc == 0) {
+                        finalstr = "Congratulations, you've matched on: " + compare1_arr[i];
+                    } else {
+                        finalstr = finalstr + ", " + compare1_arr[i];
+                    }
+
+                    ++acc;
+                }
+            }
+        }
+        if (acc == 0) {
+            finalstr = "No matches are found";
         }
 
 
-
         TextView tv = (TextView) findViewById(R.id.sample_text);
-        tv.setText(featureList.get(4)[0]);
+        tv.setText(finalstr);
+        //tv.setText(featureList.get(1)[0]);
         //tv.setText(stringFromJNI());
     }
 
